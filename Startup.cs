@@ -14,7 +14,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Serialization;
 using RentBook.Models;
+using RentBook.Repository;
 
 namespace RentBook
 {
@@ -35,6 +37,15 @@ namespace RentBook
             services.AddDbContext<Phase1EvaluationContext>(db =>
             db.UseSqlServer(Configuration.GetConnectionString("BookDBConnection")));
 
+            //Add public dependency injection for AuthorRepository
+            services.AddScoped<IAuthorTableRepository, AuthorTableRepository>();
+            services.AddScoped<IBookTableRepository, BookTableRepository>();
+            services.AddScoped<IRentTableRepository, RentTableRepository>();
+            services.AddScoped<IGenreRepository, GenreRepository>();
+            services.AddScoped<IMemberTableRepository, MemberRepository>();
+            services.AddScoped<IPublicationRepository, PublicationRepository>();
+
+
             //Register JWT authentication Scheme here
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -52,11 +63,38 @@ namespace RentBook
                     };
                 }
                 );
+
+            //Json --- Resolver
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                });
+
+            services.AddCors();
+
+            services.AddControllers().AddNewtonsoftJson(
+                options =>
+                {
+                    options.SerializerSettings
+                    .ContractResolver = new DefaultContractResolver();
+                }
+                );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //Cors
+            app.UseCors(options =>
+                options.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+
+                );
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
