@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentBook.Models;
+using RentBook.ViewModel;
 
 namespace RentBook.Repository
 {
@@ -91,5 +92,31 @@ namespace RentBook.Repository
             return result;
         }
         #endregion
+
+        public async Task<List<MemberWithRent>> GetMemberWithRent()
+        {
+            //if(_context != null)
+            //{
+            //    //LinQ
+            //    return await (
+            //                 from ph in _context.RentTable
+            //                 join me in _context.Member
+            //                 on ph.MemberId equals me.MemberId
+            //                 join bo in _context.BookTable
+            //                 on ph.BookId equals bo.BookId
+
+            //                 where DbFunctions.DiffDays(ph.BookTakenDate , ph.BookReturnDate) > 10
+            //                 select new MemberWithRent
+            //                 {
+ 
+            //                     BookName = bo.BookName,
+            //                     MemberName = me.MemberName,
+            //                     MemberId = me.MemberId,
+            //                     RentPrice = ph.RentPrice
+                                 
+            //                 }).ToListAsync();
+            //}
+            return null;
+        }
     }
 }

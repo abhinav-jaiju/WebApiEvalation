@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RentBook.Models;
+using RentBook.ViewModel;
 
 namespace RentBook.Repository
 {
@@ -22,5 +23,7 @@ namespace RentBook.Repository
 
         //Delete an rentTable
         Task<int> DeleteRent(int? id);
+
+        Task<List<MemberWithRent>> GetMemberWithRent();
     }
 }

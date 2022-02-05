@@ -100,6 +100,9 @@ namespace RentBook
                 app.UseDeveloperExceptionPage();
             }
 
+            //configure authentication: make the authentication available through the application
+            app.UseAuthentication();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
